@@ -12,7 +12,7 @@ def create_pipe():
 
 def move_pipe(pipes):
     for pipe in pipes:
-        pipe.centerx -= 6
+        pipe.centerx -= 7
     return pipes
 
 def draw_pipe(pipes):
@@ -62,7 +62,7 @@ screen = pygame.display.set_mode((432,768))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('FileGame/04B_19.TTF', 38)
 # variables for game
-gravity = 0.24
+gravity = 0.6
 bird_move = 0
 game_active = True
 score = 0
@@ -99,7 +99,7 @@ pipe_list = []
 #create timer
 spawnpipe = pygame.USEREVENT
 pygame.time.set_timer(spawnpipe, 1800)
-pipe_height = [150,220,300]
+pipe_height = [170,250,320]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
@@ -118,7 +118,7 @@ while True:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and game_active == True:
                 bird_move = 0 
-                bird_move = -10
+                bird_move = -11
                 flap_sound.play()
             if event.key == pygame.K_SPACE and game_active == False:
                 game_active = True
@@ -162,5 +162,5 @@ while True:
     if floor_x_pos <= -432:
         floor_x_pos = 0
     pygame.display.update()
-    clock.tick(20)
+    clock.tick(50)
 
