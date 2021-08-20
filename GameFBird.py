@@ -1,23 +1,23 @@
 import pygame, sys, random
 #function for game
 def draw_floor():
-    screen.blit(floor,(floor_x_pos, 600)) 
-    screen.blit(floor,(floor_x_pos + 432, 600)) 
+    screen.blit(floor,(floor_x_pos, 660)) 
+    screen.blit(floor,(floor_x_pos + 432, 660)) 
 
 def create_pipe():
     random_pipe_pos = random.choice(pipe_height)
     bottom_pipe = pipe_surface.get_rect(midtop = (500, random_pipe_pos))
-    top_pipe = pipe_surface.get_rect(midtop = (500, random_pipe_pos - 650))
+    top_pipe = pipe_surface.get_rect(midtop = (500, random_pipe_pos - 700))
     return bottom_pipe, top_pipe
 
 def move_pipe(pipes):
     for pipe in pipes:
-        pipe.centerx -= 7
+        pipe.centerx -= 5 
     return pipes
 
 def draw_pipe(pipes):
     for pipe in pipes:
-        if pipe.bottom >= 600:
+        if pipe.bottom >= 610:
             screen.blit(pipe_surface,pipe)
         else: 
             flip_pipe = pygame.transform.flip(pipe_surface,False,True)
@@ -28,12 +28,12 @@ def check_collision(pipes):
         if bird_rect.colliderect(pipe):
             hit_sound.play()
             return False
-    if bird_rect.top <= -80 or bird_rect.bottom >= 675:
+    if bird_rect.top <= -80 or bird_rect.bottom >= 680:
         return False
     return True
 
 def rotate_bird(bird1):
-    new_bird = pygame.transform.rotozoom(bird1,-bird_move*1.5, 1)
+    new_bird = pygame.transform.rotozoom(bird1,-bird_move*2, 1)
     return new_bird
 
 def bird_animation():
@@ -47,8 +47,8 @@ def score_display(game_state):
         score_rect = score_surface.get_rect(center = (220,100))
         screen.blit(score_surface,score_rect)
     if game_state == 'game_over':
-        high_score_surface = game_font.render(f'High Score: {int(high_score)}',True,(255,255,255))
-        high_score_rect = high_score_surface.get_rect(center = (216,640))
+        high_score_surface = game_font.render(f'High Score: {int(high_score)}',True,(0,255,255))
+        high_score_rect = high_score_surface.get_rect(center = (220,625))
         screen.blit(high_score_surface,high_score_rect)
 
 def update_score(score, high_score):
@@ -85,11 +85,11 @@ bird_list = [bird_down,bird_mid,bird_up]
 bird_index = 0
 bird = bird_list[bird_index]
 # bird = pygame.transform.scale2x(bird)
-bird_rect = bird.get_rect(center = (100,384))
+bird_rect = bird.get_rect(center = (80,330))
 
 # create timer for bird
 birdflap =  pygame.USEREVENT + 1
-pygame.time.set_timer(birdflap, 1100)
+pygame.time.set_timer(birdflap, 2000)
 
 #create pipe
 pipe_surface = pygame.image.load('FileGame/assets/pipe-green.png').convert()
@@ -98,8 +98,8 @@ pipe_list = []
 
 #create timer
 spawnpipe = pygame.USEREVENT
-pygame.time.set_timer(spawnpipe, 1800)
-pipe_height = [170,250,320]
+pygame.time.set_timer(spawnpipe, 5000)
+pipe_height = [210,260,310,350,405]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
@@ -108,7 +108,7 @@ game_over_rect = game_over_surface.get_rect(center = (216,384))
 flap_sound = pygame.mixer.Sound('FileGame/sound/sfx_wing.wav')
 hit_sound = pygame.mixer.Sound('FileGame/sound/sfx_hit.wav')
 point_sound = pygame.mixer.Sound('FileGame/sound/sfx_point.wav')
-point_sound_countdown = 200
+point_sound_countdown = 287
 
 while True:
     for event in pygame.event.get():
@@ -123,7 +123,7 @@ while True:
             if event.key == pygame.K_SPACE and game_active == False:
                 game_active = True
                 pipe_list.clear()
-                bird_rect.center = (100,384)
+                bird_rect.center = (100,380)
                 bird_move = 0
                 score = 0
         if event.type == spawnpipe:
@@ -146,13 +146,14 @@ while True:
         # pipe
         pipe_list = move_pipe(pipe_list)
         draw_pipe(pipe_list)
-        score += 0.01
         score_display('main_game')
         point_sound_countdown -= 1
         if point_sound_countdown <= 0:
             point_sound.play()
             point_sound_countdown = 200
+            score += 1
     else:
+        point_sound_countdown = 159
         screen.blit(game_over_surface,game_over_rect)
         high_score = update_score(score,high_score)
         score_display('game_over')
@@ -162,5 +163,5 @@ while True:
     if floor_x_pos <= -432:
         floor_x_pos = 0
     pygame.display.update()
-    clock.tick(50)
+    clock.tick(40)
 
