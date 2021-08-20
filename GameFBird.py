@@ -101,7 +101,7 @@ pipe_list = []
 #create timer
 spawnpipe = pygame.USEREVENT
 pygame.time.set_timer(spawnpipe, 5000)
-pipe_height = [210,250,300,325,350,400]
+pipe_height = [250,325,300,210,400,350]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
@@ -117,24 +117,21 @@ while True:
         if event.type == pygame.QUIT:  
             pygame.quit()
             sys.exit()
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE and game_active == True:
-                bird_move = 0 
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE or event.type == pygame.MOUSEBUTTONDOWN:
+            if game_active == True:
                 bird_move = -11
                 flap_sound.play()
-            if event.key == pygame.K_SPACE and game_active == False:
+            if game_active == False:
                 game_active = True
                 pipe_list.clear()
-                bird_rect.center = (100,380)
+                bird_rect.center = (100,375)
                 bird_move = 0
                 score = 0
+
         if event.type == spawnpipe:
             pipe_list.extend(create_pipe())
         if event.type == birdflap:
-            if bird_index < 2:
-                bird_index += 1
-            else:
-                bird_index = 0
+            bird_index = (bird_index + 1) % len(pipe_height)
             bird, bird_rect = bird_animation()
 
     screen.blit(bg,(0,0))
@@ -151,9 +148,9 @@ while True:
         score_display('main_game')
         point_sound_countdown -= 1
         if point_sound_countdown <= 0:
+            score += 1
             point_sound.play()
             point_sound_countdown = 200
-            score += 1
     else:
         point_sound_countdown = 159
         screen.blit(game_over_surface,game_over_rect)
