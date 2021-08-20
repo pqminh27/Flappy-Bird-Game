@@ -56,13 +56,15 @@ def update_score(score, high_score):
     return high_score
 
 pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 2, buffer = 512) 
+
 # convert sound file into pygame
 pygame.init()
 screen = pygame.display.set_mode((432,768))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('FileGame/04B_19.TTF', 38)
+
 # variables for game
-gravity = 0.6
+gravity = 0.65
 bird_move = 0
 game_active = True
 score = 0
@@ -99,7 +101,7 @@ pipe_list = []
 #create timer
 spawnpipe = pygame.USEREVENT
 pygame.time.set_timer(spawnpipe, 5000)
-pipe_height = [210,260,310,350,405]
+pipe_height = [210,250,300,325,350,400]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
