@@ -17,7 +17,7 @@ def move_pipe(pipes):
 
 def draw_pipe(pipes):
     for pipe in pipes:
-        if pipe.bottom >= 610:
+        if pipe.bottom >= 575:
             screen.blit(pipe_surface,pipe)
         else: 
             flip_pipe = pygame.transform.flip(pipe_surface,False,True)
@@ -83,7 +83,7 @@ floor_x_pos = 0
 bird_down = pygame.transform.scale2x(pygame.image.load('FileGame/assets/yellowbird-downflap.png').convert_alpha())
 bird_mid = pygame.transform.scale2x(pygame.image.load('FileGame/assets/yellowbird-midflap.png').convert_alpha())
 bird_up = pygame.transform.scale2x(pygame.image.load('FileGame/assets/yellowbird-upflap.png').convert_alpha())
-bird_list = [bird_down,bird_mid,bird_up]
+bird_list = [bird_down, bird_mid, bird_up]
 bird_index = 0
 bird = bird_list[bird_index]
 # bird = pygame.transform.scale2x(bird)
@@ -101,7 +101,7 @@ pipe_list = []
 #create timer
 spawnpipe = pygame.USEREVENT
 pygame.time.set_timer(spawnpipe, 5000)
-pipe_height = [250,325,300,210,400,350]
+pipe_height = [250,325,300,210,400,360]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
@@ -131,7 +131,8 @@ while True:
         if event.type == spawnpipe:
             pipe_list.extend(create_pipe())
         if event.type == birdflap:
-            bird_index = (bird_index + 1) % len(pipe_height)
+            bird_index = (bird_index + 1) % 3
+            # 3 is 3 form of birds: bird_down, bird_mid, bird_up
             bird, bird_rect = bird_animation()
 
     screen.blit(bg,(0,0))
@@ -157,7 +158,7 @@ while True:
         high_score = update_score(score,high_score)
         score_display('game_over')
 
-    floor_x_pos -= 1
+    floor_x_pos -= 5
     draw_floor()
     if floor_x_pos <= -432:
         floor_x_pos = 0
