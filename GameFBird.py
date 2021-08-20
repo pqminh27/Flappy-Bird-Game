@@ -52,8 +52,7 @@ def score_display(game_state):
         screen.blit(high_score_surface,high_score_rect)
 
 def update_score(score, high_score):
-    if score > high_score:
-        high_score = score
+    high_score = max(high_score, score)
     return high_score
 
 pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 2, buffer = 512) 
@@ -63,7 +62,7 @@ screen = pygame.display.set_mode((432,768))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('FileGame/04B_19.TTF', 38)
 # variables for game
-gravity = 0.27
+gravity = 0.24
 bird_move = 0
 game_active = True
 score = 0
@@ -90,7 +89,7 @@ bird_rect = bird.get_rect(center = (100,384))
 
 # create timer for bird
 birdflap =  pygame.USEREVENT + 1
-pygame.time.set_timer(birdflap, 1000)
+pygame.time.set_timer(birdflap, 1100)
 
 #create pipe
 pipe_surface = pygame.image.load('FileGame/assets/pipe-green.png').convert()
@@ -99,8 +98,8 @@ pipe_list = []
 
 #create timer
 spawnpipe = pygame.USEREVENT
-pygame.time.set_timer(spawnpipe, 2000)
-pipe_height = [200,300,400]
+pygame.time.set_timer(spawnpipe, 1800)
+pipe_height = [150,220,300]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
