@@ -1,4 +1,5 @@
 import pygame, sys, random
+
 #function for game
 def draw_floor():
     screen.blit(floor,(floor_x_pos, 660)) 
@@ -43,12 +44,12 @@ def bird_animation():
 
 def score_display(game_state):
     if game_state == 'main_game':
-        score_surface = game_font.render(f'Score: {int(score)}',True,(0,255,255))
-        score_rect = score_surface.get_rect(center = (220,100))
+        score_surface = game_font.render(f'Your Score: {int(score)}',True,(0,255,255))
+        score_rect = score_surface.get_rect(center = (215,100))
         screen.blit(score_surface,score_rect)
     if game_state == 'game_over':
         high_score_surface = game_font.render(f'High Score: {int(high_score)}',True,(0,255,255))
-        high_score_rect = high_score_surface.get_rect(center = (220,625))
+        high_score_rect = high_score_surface.get_rect(center = (215,625))
         screen.blit(high_score_surface,high_score_rect)
 
 def update_score(score, high_score):
@@ -61,7 +62,7 @@ pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 2, buffer = 512)
 pygame.init()
 screen = pygame.display.set_mode((432,768))
 clock = pygame.time.Clock()
-game_font = pygame.font.Font('FileGame/04B_19.TTF', 38)
+game_font = pygame.font.Font("FileGame/04B_19.TTF", 38)
 
 # variables for game
 gravity = 0.65
@@ -101,7 +102,7 @@ pipe_list = []
 #create timer
 spawnpipe = pygame.USEREVENT
 pygame.time.set_timer(spawnpipe, 5000)
-pipe_height = [250,325,300,210,400,360]
+pipe_height = [220,300,360,400,430]
 
 # create end screen
 game_over_surface = pygame.transform.scale2x(pygame.image.load('FileGame/assets/message.png').convert_alpha())
@@ -153,7 +154,7 @@ while True:
             point_sound.play()
             point_sound_countdown = 200
     else:
-        point_sound_countdown = 159
+        point_sound_countdown = 160
         screen.blit(game_over_surface,game_over_rect)
         high_score = update_score(score,high_score)
         score_display('game_over')
